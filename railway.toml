@@ -7,3 +7,7 @@ healthcheckPath = "/api/settings/mobile_app_enabled"
 healthcheckTimeout = 350
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
+
+[env]
+DATABASE_URL = "${{3892f17f-ade6-4175-bb87-8827b2d36a05.DATABASE_URL}}"
+NODE_ENV = "production"
