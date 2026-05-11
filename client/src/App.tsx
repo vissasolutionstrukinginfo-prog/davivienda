@@ -32,6 +32,7 @@ import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { usePushNotifications } from "@/hooks/use-push-notifications";
 import { useWebSocket } from "@/hooks/use-websocket";
+import { useQueryClient } from "@tanstack/react-query";
 
 const userRoutes: { path: string; component: ComponentType }[] = [
   { path: "/home", component: HomePage },
@@ -94,6 +95,8 @@ function App() {
 
   const isAdmin = user?.isAdmin === 1;
 
+  const queryClient = useQueryClient();
+
   // Sistema de notificaciones push y WebSocket
   const {
     isSupported: notificationsSupported,
@@ -110,7 +113,9 @@ function App() {
 
       // Manejar actualizaciones en tiempo real
       if (data.type === 'BALANCE_UPDATE' && isAuthenticated) {
-        // Refrescar datos del usuario
+        // Refrescar datos del usuario y cuenta
+        queryClient.invalidateQueries({ queryKey: ['/api/user'] });
+        queryClient.invalidateQueries({ queryKey: ['/api/account'] });
         refetch();
         sendNotification({
           title: 'Saldo Actualizado',
@@ -120,6 +125,8 @@ function App() {
       }
 
       if (data.type === 'NEW_TRANSACTION' && isAuthenticated) {
+        // Refrescar transacciones
+        queryClient.invalidateQueries({ queryKey: ['/api/transactions'] });
         sendNotification({
           title: 'Nueva Transacción',
           body: `Transacción de ${data.amount} ${data.currency}`,
