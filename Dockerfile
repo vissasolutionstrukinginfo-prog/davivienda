@@ -9,6 +9,7 @@ WORKDIR /app
 # Copiar archivos de configuración
 COPY package*.json ./
 COPY drizzle.config.ts ./
+COPY .env ./
 
 # Instalar TODAS las dependencias (incluyendo devDependencies para el build)
 RUN npm ci
