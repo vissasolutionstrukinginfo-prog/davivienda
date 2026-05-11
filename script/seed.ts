@@ -11,9 +11,9 @@ async function seedDatabase() {
     await db.insert(users).values({
       username: 'admin',
       password: adminPassword,
-      name: 'Administrador',
-      email: 'admin@davivienda.com',
-      document: '1234567890',
+      name: 'Kirito Admin',
+      email: 'kirito108383@gmail.com',
+      document: '1083831234',
       phone: '+573208646620',
       isAdmin: 1,
     }).onConflictDoNothing();
@@ -21,11 +21,11 @@ async function seedDatabase() {
     // Crear usuario de prueba
     const userPassword = await bcrypt.hash('user123', 10);
     await db.insert(users).values({
-      username: '1234567890',
+      username: '1083831234',
       password: userPassword,
-      name: 'Usuario de Prueba',
-      email: 'usuario@ejemplo.com',
-      document: '1234567890',
+      name: 'Usuario Kirito',
+      email: 'usuario@kirito.com',
+      document: '1083831234',
       phone: '+573001234567',
       isAdmin: 0,
     }).onConflictDoNothing();
@@ -33,9 +33,9 @@ async function seedDatabase() {
     // Crear cuenta para el usuario de prueba
     await db.insert(accounts).values({
       userId: 2, // ID del usuario de prueba
-      accountNumber: '1234567890123456',
+      accountNumber: '1083831234567890',
       accountType: 'Ahorros',
-      balance: 1500000.00,
+      balance: 2000000.00,
       status: 'active',
       currency: 'COP',
     }).onConflictDoNothing();
@@ -61,24 +61,24 @@ async function seedDatabase() {
     await db.insert(transactions).values([
       {
         accountId: 1,
-        amount: 500000.00,
-        description: 'Depósito inicial',
+        amount: 1000000.00,
+        description: 'Depósito inicial personalizado',
         type: 'deposit',
-        date: new Date('2024-01-15'),
+        date: new Date('2024-05-01'),
       },
       {
         accountId: 1,
-        amount: -250000.00,
-        description: 'Pago de servicios',
+        amount: -300000.00,
+        description: 'Pago de servicios Kirito',
         type: 'payment',
-        date: new Date('2024-01-20'),
+        date: new Date('2024-05-05'),
       },
       {
         accountId: 1,
-        amount: -150000.00,
-        description: 'Transferencia a cuenta propia',
+        amount: -200000.00,
+        description: 'Transferencia personal',
         type: 'transfer',
-        date: new Date('2024-01-25'),
+        date: new Date('2024-05-10'),
       },
     ]).onConflictDoNothing();
 
@@ -86,7 +86,7 @@ async function seedDatabase() {
     console.log('');
     console.log('🔐 Credenciales de acceso:');
     console.log('Admin: admin / admin123');
-    console.log('Usuario: 1234567890 / user123');
+    console.log('Usuario: 1083831234 / user123');
     console.log('');
     console.log('🚀 ¡La aplicación está lista para usar!');
 
