@@ -3,7 +3,7 @@ const { execSync } = require('child_process');
 async function start() {
   try {
     console.log('Running database migrations...');
-    execSync('npx drizzle-kit push --schema=shared/schema.ts', { stdio: 'inherit' });
+    execSync('npx drizzle-kit push', { stdio: 'inherit' });
     console.log('Migrations completed successfully');
   } catch (error) {
     console.error('Migration failed:', error.message);
