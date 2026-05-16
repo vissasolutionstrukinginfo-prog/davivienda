@@ -2,7 +2,7 @@
 builder = "DOCKERFILE"
 
 [deploy]
-startCommand = "npm start"
+startCommand = "node start-prod.cjs"
 healthcheckPath = "/api/settings/mobile_app_enabled"
 healthcheckTimeout = 350
 restartPolicyType = "ON_FAILURE"

@@ -43,10 +43,11 @@ const LoginPage = () => {
   const { toast } = useToast();
   const { callSupport, openWhatsApp } = usePublicSupportPhone();
 
-  const [mobileAppEnabled, setMobileAppEnabled] = useState(false);
+  const [mobileAppEnabled, setMobileAppEnabled] = useState(true);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isAppInstalled, setIsAppInstalled] = useState(false);
   const [showInstallDialog, setShowInstallDialog] = useState(false);
+  const [isInstallAvailable, setIsInstallAvailable] = useState(false);
 
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.userAgent.includes('Mac') && 'ontouchend' in document);
   const isAndroid = /Android/.test(navigator.userAgent);
@@ -54,13 +55,17 @@ const LoginPage = () => {
 
   useEffect(() => {
     fetch('/api/settings/mobile_app_enabled')
-      .then(r => r.json())
-      .then(data => setMobileAppEnabled(data.enabled))
-      .catch(() => {});
+      .then((r) => r.json())
+      .then((data) => setMobileAppEnabled(data.enabled ?? true))
+      .catch(() => {
+        // Keep the install button available if the backend is not available.
+        setMobileAppEnabled(true);
+      });
 
     const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e);
+      setIsInstallAvailable(true);
     };
     window.addEventListener('beforeinstallprompt', handler);
 
@@ -72,6 +77,10 @@ const LoginPage = () => {
 
     if (window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone) {
       setIsAppInstalled(true);
+    }
+
+    if (isIOS || isAndroid) {
+      setIsInstallAvailable(true);
     }
 
     return () => {
@@ -487,7 +496,7 @@ const LoginPage = () => {
           Quiero un producto
         </Button>
         
-        {mobileAppEnabled && !isAppInstalled && (
+        {mobileAppEnabled && !isAppInstalled && isInstallAvailable && (
           <Button 
             data-testid="button-install-app"
             className="w-full rounded-full bg-white/20 text-white border border-white/50 h-12 shadow-md flex items-center justify-center gap-2 hover:bg-white/30 text-sm"

@@ -2,8 +2,6 @@
 const CACHE_NAME = 'davivienda-v1';
 const urlsToCache = [
   '/',
-  '/static/js/bundle.js',
-  '/static/css/main.css',
   '/manifest.json',
   '/icon-192x192.png',
   '/icon-512x512.png'
@@ -67,7 +65,10 @@ self.addEventListener('fetch', (event) => {
 
           caches.open(CACHE_NAME)
             .then((cache) => {
-              cache.put(event.request, responseToCache);
+              // Cache app shell resources dynamically when available.
+              if (event.request.url.startsWith(self.location.origin)) {
+                cache.put(event.request, responseToCache);
+              }
             });
 
           return response;
